@@ -7,26 +7,24 @@ package txtparsing;
 public class MyDoc {
 
     private String title;
-    private String caption;
-    private String mesh;
+    private String text;
 
-    public MyDoc(String title, String caption) {
+
+    public MyDoc(String title, String text) {
         this.title = title;
-        this.caption = caption;
+        this.text = text;
     }
 
-    public MyDoc(String title, String caption, String mesh) {
-        this.title = title;
-        this.caption = caption;
-        this.mesh = mesh;
+
+    public MyDoc() {
     }
 
     @Override
     public String toString() {
         String ret = "MyDoc{"
                 + "\n\tTitle: " + title
-                + "\n\tCaption: " + caption
-                + "\n\tMesh: " + mesh;                
+                + "\n\tText: " + text;
+
         return ret + "\n}";
     }
 
@@ -39,19 +37,13 @@ public class MyDoc {
         this.title = title;
     }
 
-    public String getCaption() {
-        return caption;
+    public String getText() {
+        return text;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setText(String caption) {
+        this.text = text;
     }
 
-    public String getMesh() {
-        return mesh;
-    }
 
-    public void setMesh(String mesh) {
-        this.mesh = mesh;
-    }
 }

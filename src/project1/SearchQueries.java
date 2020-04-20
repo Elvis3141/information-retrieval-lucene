@@ -2,15 +2,14 @@ package project1;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.Similarity;
 import org.apache.lucene.store.FSDirectory;
 import txtparsing.TXTParsing;
 import utils.IO;
@@ -33,11 +32,16 @@ public class SearchQueries {
             IndexReader indexReader = DirectoryReader.open(FSDirectory.open(Paths.get(indexLocation)));
 
             //Creates a searcher searching the provided index, Implements search over a single IndexReader.
-            IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-            indexSearcher.setSimilarity(new BM25Similarity());
 
-            // define which analyzer to use for the normalization of user's query
             Analyzer analyzer = new EnglishAnalyzer();
+
+            //Similarity similarity = new BM25Similarity();
+
+            IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+
+            indexSearcher.setSimilarity(new BM25Similarity());
+            //System.out.println("indexSearcher  "+indexSearcher.collectionStatistics(field).docCount());
+            // define which analyzer to use for the normalization of user's query
 
             // create a query parser on the field "contents"
             QueryParser parser = new QueryParser(field, analyzer);
@@ -51,14 +55,26 @@ public class SearchQueries {
             for (int i=0; i<queries.length; i++){
                 // parse the query according to QueryParser
                 Query query = parser.parse(queries[i]);
-                //System.out.println("Searching for: " + query.toString(field));
+                System.out.println("Searching for: " + query.toString(field));
 
                 // search the index using the indexSearcher for k top searchers
                 TopDocs queryResults = indexSearcher.search(query, 20);
+
+               /* TopScoreDocCollector collector = TopScoreDocCollector.create(20);
+                indexSearcher.search(query, collector);
+                ScoreDoc[] hits = collector.topDocs().scoreDocs;
+                System.out.println("Found " + hits.length + " hits.");
+                for(int j=0;j<hits.length;++j) {
+                    int docId = hits[j].doc;
+                    Document d = indexSearcher.doc(docId);
+                    System.out.println((j + 1) + ". " + d.get("title"));
+                }*/
+
+
                 ScoreDoc[] hits = queryResults.scoreDocs;
                 long numTotalHits = queryResults.totalHits;
                 //String docID = indexSearcher.doc();
-
+                //System.out.println("numTotalHits "+numTotalHits);
 
                 //System.out.println(numTotalHits + " total matching documents");
 
@@ -66,13 +82,13 @@ public class SearchQueries {
                     Document hitDoc = indexSearcher.doc(hits[j].doc);
                     int docID = hits[j].doc;
                     //System.out.println("\tScore "+hits[i].score +"\ttitle="+hitDoc.get("title")/*+"\tcaption:"+hitDoc.get("caption")+"\tmesh:"+hitDoc.get("mesh")*/);
-                    //System.out.println("Q"+ i + "\tQ0 " + "\t"+hitDoc.get("title") + "\t0" + "\t"+hits[j].score + "\t Lucene");
+                    System.out.println("Q"+ i + "\tQ0 " + "\t"+hitDoc.get("title") + "\t0" + "\t"+hits[j].score + "\t Lucene");
                     results = results.concat("Q"+ (i+1) + "\tQ0 " + "\t"+hitDoc.get("title") + "\t0" + "\t"+hits[j].score + "\t Lucene\n");
                 }
 
 
             }
-            System.out.println(results);
+            //System.out.println(results);
             IO.WriteToFile(results, "docs//results_file.txt", "C://Users//Elvis//Desktop//Anaktish//trec_eval//results_file.txt");
 
 
