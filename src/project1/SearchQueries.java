@@ -14,6 +14,7 @@ import org.apache.lucene.store.FSDirectory;
 import txtparsing.TXTParsing;
 import utils.IO;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
@@ -25,7 +26,7 @@ public class SearchQueries {
     public SearchQueries(){
         try{
             String indexLocation = ("index"); //define where the index is stored
-            String field = "contents"; //define which field will be searched
+            String field = "text"; //define which field will be searched
 
             //Access the index using indexReaderFSDirectory.open(Paths.get(index))
             //IndexReader is an abstract class, providing an interface for accessing an index.
@@ -55,7 +56,7 @@ public class SearchQueries {
             for (int i=0; i<queries.length; i++){
                 // parse the query according to QueryParser
                 Query query = parser.parse(queries[i]);
-                System.out.println("Searching for: " + query.toString(field));
+                //System.out.println("Searching for: " + query.toString(field));
 
                 // search the index using the indexSearcher for k top searchers
                 TopDocs queryResults = indexSearcher.search(query, 20);
@@ -82,8 +83,10 @@ public class SearchQueries {
                     Document hitDoc = indexSearcher.doc(hits[j].doc);
                     int docID = hits[j].doc;
                     //System.out.println("\tScore "+hits[i].score +"\ttitle="+hitDoc.get("title")/*+"\tcaption:"+hitDoc.get("caption")+"\tmesh:"+hitDoc.get("mesh")*/);
-                    System.out.println("Q"+ i + "\tQ0 " + "\t"+hitDoc.get("title") + "\t0" + "\t"+hits[j].score + "\t Lucene");
+                    //System.out.println("Q"+ i + "\tQ0 " + "\t"+hitDoc.get("title") + "\t0" + "\t"+hits[j].score + "\t Lucene");
                     results = results.concat("Q"+ (i+1) + "\tQ0 " + "\t"+hitDoc.get("title") + "\t0" + "\t"+hits[j].score + "\t Lucene\n");
+                    System.out.println(hitDoc.get("text"));
+                    System.out.println("\n");
                 }
 
 

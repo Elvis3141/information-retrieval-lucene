@@ -25,26 +25,6 @@ public class TXTParsing {
         String[] docs = txt_file.split("///");
         //String[] line = docs[0].split("^[0-9]{6}$");
 
-
-
-
-        *//*for (String doc : docs){
-            String[] line = doc.split("\n");
-            StringBuilder sb = new StringBuilder();
-            String txtList[] = new String[2];
-            for (String text : line) {
-                if(text.matches("^[0-9]{6}$")){
-                    txtList[0] = text;
-                    //System.out.println(text);
-                }else {
-                    sb.append(text);
-                }
-            }
-            txtList[1] = sb.toString();
-            System.out.println(txtList[1]);
-        }*//*
-
-
         //System.out.println(docs[2]);
        *//* for(int i=0; i<docs.length; i++){
             String[] line = docs[i].split("\n");
@@ -93,16 +73,14 @@ public class TXTParsing {
             String txt_file = IO.ReadEntireFileIntoAString(file);
 
             String[] docs = txt_file.split("///");
-            System.out.println("lenght "+docs.length);
+            //System.out.println("lenght "+docs.length);
             //Parse each document from the txt file
             List<MyDoc> parsed_docs= new ArrayList<MyDoc>();
 
             for (String doc : docs){
                 String[] line = doc.split("\n");
                 StringBuilder sb = new StringBuilder();
-               // String txtList[] = new String[2];
                 String title = "";
-                //String text = "";
                 for (String txt : line) {
                     if(txt.matches("^[0-9]{6}$")){
                         title = txt;
@@ -111,35 +89,11 @@ public class TXTParsing {
                         sb.append(txt);
                     }
                 }
-                //txtList[1] = sb.toString();
 
                 MyDoc mydoc = new MyDoc(title,sb.toString());
                 parsed_docs.add(mydoc);
                 //System.out.println(mydoc.getCaption());
             }
-
-
-          /*  for(int i=0; i<docs.length; i++){
-                String[] line = docs[i].split("\n");
-                List<String> itemList = new ArrayList<String>(Arrays.asList(line));
-
-
-                if(i == 0){
-                    itemList.remove(0);
-                    MyDoc mydoc = new MyDoc(line[0],itemList.toString());
-                    //System.out.println("CAPTION :"+itemList.toString());
-
-                    parsed_docs.add(mydoc);
-                }else {
-                    itemList.remove(0);
-                    itemList.remove(0);
-                    //System.out.println("CAPTION :"+itemList.get(1));
-                    //itemList.remove(0);
-                    MyDoc mydoc = new MyDoc(line[1],itemList.toString());
-                    //System.out.println(line[1]);
-                    parsed_docs.add(mydoc);
-                }
-            }*/
 
             return parsed_docs;
         } catch (Throwable err) {

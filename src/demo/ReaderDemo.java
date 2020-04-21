@@ -47,7 +47,8 @@ public class ReaderDemo {
             
             for (int i=0; i<indexReader.maxDoc(); i++) {
                 Document doc = indexReader.document(i);
-                System.out.println("\ttitle="+doc.getField("title")+"\tcaption:"+doc.get("caption")+"\tmesh:"+doc.get("mesh"));
+                //System.out.println("\ttitle="+doc.getField("title")+"\tcaption:"+doc.get("caption")+"\tmesh:"+doc.get("mesh"));
+                System.out.println("\ttitle="+doc.getField("title")+"\tcaption:"+doc.get("text"));
             }
         } catch (CorruptIndexException ex) {
             ex.printStackTrace();
