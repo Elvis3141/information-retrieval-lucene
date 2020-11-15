@@ -24,21 +24,12 @@ package project1;
         import org.apache.lucene.util.Version;
         import txtparsing.*;
 
-/**
- * Creates a lucene's inverted index from an xml file.
- *
- * @author Tonia Kyriakopoulou
- */
-
-
 public class Indexer {
 
     /**
      * Configures IndexWriter.
      * Creates a lucene's inverted index.
      **/
-
-
 
     public Indexer() throws Exception{
 
@@ -53,11 +44,6 @@ public class Indexer {
             Directory dir = FSDirectory.open(Paths.get(indexLocation));
             // define which analyzer to use for the normalization of documents
             Analyzer analyzer = new EnglishAnalyzer();
-            //System.out.println("analyzer "+analyzer);
-
-
-            //Similarity similarity = new BM25Similarity();
-            // configure IndexWriter
 
             // Create a new index in the directory, removing any
             // previously indexed documents:
@@ -68,17 +54,12 @@ public class Indexer {
             iwc.setOpenMode(OpenMode.CREATE);
 
             // create the IndexWriter with the configuration as above
-            //IndexWriter indexWriter = new IndexWriter(dir, iwc);
             IndexWriter indexWriter = null;
 
             // parse txt document using TXT parser and index it
             List<MyDoc> docs = TXTParsing.parse2(txtFile);
-            //System.out.println(docs.size());
 
             for (MyDoc doc : docs){
-
-                //System.out.println(doc.getTitle());
-                //System.out.println(doc.getCaption());
                 indexDoc(indexWriter, doc);
             }
 
@@ -102,9 +83,7 @@ public class Indexer {
      * @param indexWriter the indexWriter that will index Documents
      * @param mydoc the document to be indexed
      **/
-
-
-
+        
     private void indexDoc(IndexWriter indexWriter, MyDoc mydoc){
 
         try {
@@ -116,11 +95,9 @@ public class Indexer {
             doc.add(title);
 
             String fullSearchableText = mydoc.getText();
-            //System.out.println("CAPTION ##########  "+fullSearchableText);
             TextField contents = new TextField("text", fullSearchableText, Field.Store.NO);
             doc.add(contents);
             Analyzer analyzer = new EnglishAnalyzer();
-
 
             if (indexWriter.getConfig().getOpenMode() == OpenMode.CREATE) {
                 // New index, so we just add the document (no old document can be there):
@@ -136,7 +113,6 @@ public class Indexer {
     /**
      * Initializes an IndexerDemo
      */
-
 
     public static void main(String[] args) {
         try {
